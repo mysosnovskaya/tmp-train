@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import javax.validation.Valid;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -38,6 +39,11 @@ public class UserController {
     @GetMapping
     public List<User> getAllUsers() {
         return usersById.values().stream().filter(u -> u.getId() != 1).collect(Collectors.toList());
+    }
+
+    @GetMapping(value = "/sorted")
+    public List<User> getAllUsersSortedByLogin() {
+        return usersById.values().stream().sorted().sorted(Comparator.comparing(User::getLogin)).collect(Collectors.toList());
     }
 
     @PutMapping
