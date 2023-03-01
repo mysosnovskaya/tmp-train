@@ -9,12 +9,15 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping(value = "/users")
 public class UserController {
-    private final List<User> userList = new ArrayList<>();
-    private int idGenerator = 1;
+    private final List<User> userList = new ArrayList<>(List.of(
+            new User(1, "admin", "admin@gamil.com", "123")
+    ));
+    private int idGenerator = 2;
 
     @PostMapping
     public User createUser(@RequestBody User user) {
@@ -25,6 +28,6 @@ public class UserController {
 
     @GetMapping
     public List<User> getAllUsers() {
-        return userList;
+        return userList.stream().filter(u -> u.getId()  != 1).collect(Collectors.toList());
     }
 }
