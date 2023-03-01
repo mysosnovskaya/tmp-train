@@ -11,14 +11,15 @@ import javax.validation.constraints.Size;
 @Data
 @AllArgsConstructor
 public class User {
-    @Null
+    @Null(groups = CreateGroup.class)
+    @NotBlank(groups = UpdateGroup.class)
     private Integer id;
-    @NotBlank
+    @NotBlank(groups = {CreateGroup.class, UpdateGroup.class})
     private String login;
-    @Email
-    @NotBlank
+    @Email(groups = {CreateGroup.class, UpdateGroup.class})
+    @NotBlank(groups = {CreateGroup.class, UpdateGroup.class})
     private String email;
-    @NotBlank
-    @Size(min = 8)
+    @NotBlank(groups = {CreateGroup.class, UpdateGroup.class})
+    @Size(min = 8, groups = {CreateGroup.class, UpdateGroup.class})
     private String password;
 }

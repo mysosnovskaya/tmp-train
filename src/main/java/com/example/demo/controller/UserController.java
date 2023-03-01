@@ -1,7 +1,10 @@
 package com.example.demo.controller;
 
+import com.example.demo.model.CreateGroup;
+import com.example.demo.model.UpdateGroup;
 import com.example.demo.model.User;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -9,7 +12,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import javax.validation.Valid;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.HashMap;
@@ -27,7 +29,7 @@ public class UserController {
     private int idGenerator = 2;
 
     @PostMapping
-    public User createUser(@RequestBody @Valid User user) {
+    public User createUser(@RequestBody @Validated(CreateGroup.class) User user) {
         if (usersById.values().stream().noneMatch(u -> u.getLogin().equals(user.getLogin()))) {
             user.setId(idGenerator++);
             usersById.put(user.getId(), user);
@@ -47,7 +49,7 @@ public class UserController {
     }
 
     @PutMapping
-    public User updateUser(@RequestBody User user) {
+    public User updateUser(@RequestBody @Validated(UpdateGroup.class) User user) {
         if (usersById.containsKey(user.getId())) {
             usersById.put(user.getId(), user);
             return user;
