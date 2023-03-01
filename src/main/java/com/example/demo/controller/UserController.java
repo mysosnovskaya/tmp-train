@@ -40,7 +40,7 @@ public class UserController {
     }
 
     @GetMapping(value = "/sorted")
-    public List<User> findAllUsersSortedByLogin() {
+    public List<User> getAllUsersSortedByLogin() {
         return usersById.values().stream().sorted().sorted(Comparator.comparing(User::getLogin)).collect(Collectors.toList());
     }
 
