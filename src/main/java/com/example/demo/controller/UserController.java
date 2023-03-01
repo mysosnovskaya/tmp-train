@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.validation.Valid;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -25,10 +26,13 @@ public class UserController {
     private int idGenerator = 2;
 
     @PostMapping
-    public User createUser(@RequestBody User user) {
-        user.setId(idGenerator++);
-        usersById.put(user.getId(), user);
-        return user;
+    public User createUser(@RequestBody @Valid User user) {
+        if (usersById.values().stream().noneMatch(u -> u.getLogin().equals(user.getLogin()))) {
+            user.setId(idGenerator++);
+            usersById.put(user.getId(), user);
+            return user;
+        }
+        throw new RuntimeException("не уникальный login");
     }
 
     @GetMapping
