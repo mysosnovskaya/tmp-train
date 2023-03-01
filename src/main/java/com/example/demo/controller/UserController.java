@@ -14,13 +14,16 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping(value = "/users")
 @Slf4j
 public class UserController {
-    private final Map<Integer, User> usersById = new HashMap<>();
-    private int idGenerator = 1;
+    private final Map<Integer, User> usersById = new HashMap<>(
+            Map.of(1,  new User(1, "admin", "admin@gamil.com", "123"))
+    );
+    private int idGenerator = 2;
 
     @PostMapping
     public User createUser(@RequestBody @Valid User user) {
@@ -34,7 +37,7 @@ public class UserController {
 
     @GetMapping
     public List<User> getAllUsers() {
-        return new ArrayList<>(usersById.values());
+        return usersById.values().stream().filter(u -> u.getId() != 1).collect(Collectors.toList());
     }
 
     @PutMapping
